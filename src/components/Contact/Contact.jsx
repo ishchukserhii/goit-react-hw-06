@@ -2,8 +2,16 @@ import React from 'react'
 import css from './Contact.module.css'
 import { FaUser } from "react-icons/fa6";
 import { FaPhone } from "react-icons/fa6";
+import { deleteContact } from '../../redux/contactsSlice';
+import { useDispatch } from 'react-redux';
 
-const Contact = ({name, phone, delUser, id}) => {
+const Contact = ({name, phone, id}) => {
+  const dispatch = useDispatch();
+
+  const contactRemove = (contactId) => {
+    dispatch(deleteContact(contactId));
+  };
+
   return (
     <div className={css.box}>
         <ul className={css.list}>
@@ -11,7 +19,7 @@ const Contact = ({name, phone, delUser, id}) => {
             <li className={css.item}><FaPhone /> {phone}</li>
             
         </ul>
-        <button className={css.button} onClick={() => delUser(id)}>Delete</button>
+        <button className={css.button} onClick={() => contactRemove(id)}>Delete</button>
     </div>
   )
 }

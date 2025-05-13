@@ -3,6 +3,8 @@ import css from "./ContactForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsSlice';
 
 const UserSchema = Yup.object().shape({
   name: Yup.string()
@@ -19,22 +21,33 @@ const UserSchema = Yup.object().shape({
     .min(3, "Must be at least 3 digits")
     .max(50, "Must be at most 50 digits"),
 });
+const initialValues = {
+  name: '',
+  number: '',
+};
 
-const ContactForm = ({ onAdd }) => {
+const ContactForm = () => {
+  
+
+
+  const dispatch = useDispatch();
+
   const handleSubmit = (values, actions) => {
-    const newContact = {
-      id: nanoid(),
-      ...values,
-    };
-    onAdd(newContact);
+    dispatch(
+      addContact({
+        ...values,
+        id: nanoid(),
+      })
+    );
     actions.resetForm();
   };
+
+
+
+
   return (
     <Formik
-      initialValues={{
-        name: "",
-        number: "",
-      }}
+      initialValues={initialValues}
       validationSchema={UserSchema}
       onSubmit={handleSubmit}
     >
